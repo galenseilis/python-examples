@@ -1,0 +1,6 @@
+score,male,siblings,family_inv,non_english,prev_disab,age_test,non_severe_hl,mother_hs,early_ident,non_white
+40,0,2.0,2.0,False,,55,1.0,,False,False
+31,1,0.0,,False,0.0,53,0.0,0.0,False,False
+83,1,1.0,1.0,True,0.0,52,1.0,,False,True
+75,0,3.0,,False,0.0,55,0.0,1.0,False,False
+62,0,0.0,4.0,False,1.0,50,0.0,,False,False

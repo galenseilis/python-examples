@@ -1,0 +1,40 @@
+digraph {
+	sigma [label="sigma
+~
+HalfNormal" shape=ellipse]
+	c2 [label="c2
+~
+InvGamma" shape=ellipse]
+	beta0 [label="beta0
+~
+Normal" shape=ellipse]
+	tau [label="tau
+~
+HalfStudentT" shape=ellipse]
+	subgraph "clusterpredictors (10)" {
+		beta [label="beta
+~
+Deterministic" shape=box]
+		lam [label="lam
+~
+HalfStudentT" shape=ellipse]
+		z [label="z
+~
+Normal" shape=ellipse]
+		label="predictors (10)" labeljust=r labelloc=b style=rounded
+	}
+	subgraph cluster101 {
+		scores [label="scores
+~
+Normal" shape=ellipse style=filled]
+		label=101 labeljust=r labelloc=b style=rounded
+	}
+	sigma -> tau
+	c2 -> beta
+	tau -> beta
+	lam -> beta
+	z -> beta
+	sigma -> scores
+	beta0 -> scores
+	beta -> scores
+}
