@@ -1,0 +1,57 @@
+---
+title: "🚘 Monty Hall Dash 🐐"
+author: "Galen Seilis"
+format: dashboard
+echo: false
+---
+
+# Raw Data
+
+```{python}
+import pandas as pd
+
+df = pd.read_csv('example.csv')
+df
+```
+
+# Data Summary
+
+```{python}
+pd.crosstab(df['init_win'], df['final_win'], margins=True)
+```
+
+```{python}
+df.groupby(by='decision').describe()
+```
+
+# Trace
+
+```{python}
+import arviz as az
+idata = az.from_netcdf("trace.nc")
+
+trace_plot = az.plot_trace(idata, var_names=["p"])
+```
+
+```{python}
+az.summary(idata, round_to=2)
+```
+
+# Posterior
+
+```{python}
+posterior_plot = az.plot_posterior(idata, var_names=["p"], hdi_prob=0.95)
+```
+
+# Model Diagram
+
+```{python}
+import pymc as pm
+import pickle
+import cloudpickle
+
+with open('model.pkl', 'rb') as buff:
+    model = cloudpickle.load(buff)['model']
+
+pm.model_to_graphviz(model)
+```
