@@ -15,16 +15,16 @@ J = len(y)
 
 # Pooled model
 with pm.Model() as pooled:
-	# Latent pooled effect size
+    # Latent pooled effect size
 
-	mu = pm.Normal("mu", 0, sigma=1e6)
-	obs = pm.Normal("obs", mu, sigma=sigma, observed=y)
-	trace_p = pm.sample(2000)
+    mu = pm.Normal("mu", 0, sigma=1e6)
+    obs = pm.Normal("obs", mu, sigma=sigma, observed=y)
+    trace_p = pm.sample(2000)
 
 # Plot trace of pooled model
 az.plot_trace(trace_p)
 plt.tight_layout()
-plt.savefig('pooled_model_trace.png', dpi=300)
+plt.savefig("pooled_model_trace.png", dpi=300)
 plt.close()
 
 
@@ -50,19 +50,19 @@ plt.close()
 
 az.plot_forest(trace_h, var_names="theta")
 plt.tight_layout()
-plt.savefig('h_model_forest_theta.png', dpi=300)
+plt.savefig("h_model_forest_theta.png", dpi=300)
 plt.close()
 
 # Model Log-Likelihood
 with pooled:
-	pm.compute_log_likelihood(trace_p)
+    pm.compute_log_likelihood(trace_p)
 
 with hierarchical:
-	pm.compute_log_likelihood(trace_h)
+    pm.compute_log_likelihood(trace_h)
 
 df_comp_loo = az.compare({"hierarchical": trace_h, "pooled": trace_p})
 
 az.plot_compare(df_comp_loo, insample_dev=False)
 plt.tight_layout()
-plt.savefig('model_comparison_plot.png', dpi=300)
+plt.savefig("model_comparison_plot.png", dpi=300)
 plt.close()

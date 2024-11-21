@@ -31,17 +31,12 @@ y = true_regression_line + rng.normal(scale=0.5, size=size)
 data = pd.DataFrame(dict(x=x, y=y))
 
 # Plot Data
-fig = plt.figure(figsize=(7,7))
-ax = fig.add_subplot(
-	111,
-	xlabel='x',
-	ylabel='y',
-	title='Generated Data'
-	)
+fig = plt.figure(figsize=(7, 7))
+ax = fig.add_subplot(111, xlabel="x", ylabel="y", title="Generated Data")
 ax.plot(x, y, "x", label="sampled data")
 ax.plot(x, true_regression_line, label="true regression line", lw=2.0)
 plt.legend(loc=0)
-plt.savefig('generated_data.png', dpi=300)
+plt.savefig("generated_data.png", dpi=300)
 plt.close()
 
 # Estimating the model
@@ -59,21 +54,23 @@ with Model() as model:  # model specifications in PyMC are wrapped in a with-sta
     idata = sample(3000)
 
 # Estimating with Bambi model
-model = bmb.Model('y ~ x', data)
+model = bmb.Model("y ~ x", data)
 idata = model.fit(draws=10_000)
 
 # Plot posterior trace
-az.plot_trace(idata, figsize=(10,7))
+az.plot_trace(idata, figsize=(10, 7))
 plt.tight_layout()
-plt.savefig('posterior_trace.png', dpi=300)
+plt.savefig("posterior_trace.png", dpi=300)
 plt.close()
 
 # Plot posterior predictive lines
-idata.posterior["y_model"] = idata.posterior["Intercept"] + idata.posterior["x"] * xr.DataArray(x)
+idata.posterior["y_model"] = idata.posterior["Intercept"] + idata.posterior[
+    "x"
+] * xr.DataArray(x)
 _, ax = plt.subplots(figsize=(7, 7))
 az.plot_lm(idata=idata, y="y", num_samples=100, axes=ax, y_model="y_model")
 ax.set_title("Posterior predictive regression lines")
 ax.set_xlabel("x")
 plt.tight_layout()
-plt.savefig('posterior_predictive_lines.png', dpi=300)
+plt.savefig("posterior_predictive_lines.png", dpi=300)
 plt.close()

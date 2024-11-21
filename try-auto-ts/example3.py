@@ -1,6 +1,6 @@
 from autots import AutoTS, load_live_daily, create_regressor
 
-fred_key=None
+fred_key = None
 gsa_key = None
 forecast_length = 60
 
@@ -20,7 +20,7 @@ frequency = (
     "D"  # "infer" for automatic alignment, but specific offsets are most reliable
 )
 
-drop_most_recent=1
+drop_most_recent = 1
 
 tickers = ["MSFT", "PG"]
 
@@ -37,7 +37,13 @@ df = load_live_daily(
     earthquake_min_magnitude=5,
     weather_years=3,
     london_air_days=700,
-    wikipedia_pages=['all', 'Microsoft', "Procter_%26_Gamble", "YouTube", "United_States"],
+    wikipedia_pages=[
+        "all",
+        "Microsoft",
+        "Procter_%26_Gamble",
+        "YouTube",
+        "United_States",
+    ],
     gsa_key=gsa_key,
     gov_domain_list=None,  # ['usajobs.gov', 'usps.com', 'weather.gov'],
     gov_domain_limit=700,

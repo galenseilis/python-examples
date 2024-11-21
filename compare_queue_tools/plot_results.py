@@ -12,7 +12,7 @@ plt.ylabel("Frequency")
 plt.xlabel("Run Time (seconds)")
 plt.xscale("log")
 plt.legend()
-plt.savefig('run_time_hist.png', dpi=300, transparent=True)
+plt.savefig("run_time_hist.png", dpi=300, transparent=True)
 plt.close()
 
 

@@ -9,13 +9,13 @@ data = np.random.exponential(scale=1.0, size=100)
 # Create PyMC model
 with pm.Model() as model:
     # Exponential distribution parameter
-    lambda_ = pm.Exponential('lambda_', lam=1.0)
-    
+    lambda_ = pm.Exponential("lambda_", lam=1.0)
+
     # Observed data
-    obs = pm.Exponential('obs', lam=lambda_, observed=data)
-    
+    obs = pm.Exponential("obs", lam=lambda_, observed=data)
+
     # Round the sampled exponential values
-    rounded_obs = pm.Deterministic('rounded_obs', pm.math.ceil(obs))
+    rounded_obs = pm.Deterministic("rounded_obs", pm.math.ceil(obs))
 
 # Sampling
 with model:

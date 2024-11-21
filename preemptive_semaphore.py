@@ -1,6 +1,7 @@
 import random
 import heapq
 
+
 class PreemptiveSemaphore:
     def __init__(self, initial):
         self.value = initial
@@ -11,24 +12,30 @@ class PreemptiveSemaphore:
             self.value -= 1
             print(f"Thread {thread_id} acquired the semaphore.")
         else:
-            print(f"Thread {thread_id} with priority {priority} is waiting for the semaphore.")
+            print(
+                f"Thread {thread_id} with priority {priority} is waiting for the semaphore."
+            )
             heapq.heappush(self.waiting, (priority, thread_id))
 
     def release(self, thread_id):
         if self.waiting:
             # Pop the highest priority thread (smallest priority number)
             next_priority, next_thread = heapq.heappop(self.waiting)
-            print(f"Thread {thread_id} released the semaphore; now Thread {next_thread} with priority {next_priority} can acquire it.")
+            print(
+                f"Thread {thread_id} released the semaphore; now Thread {next_thread} with priority {next_priority} can acquire it."
+            )
             self.value -= 1  # Immediately allocate the semaphore to the next thread
         else:
             self.value += 1
             print(f"Thread {thread_id} released the semaphore.")
+
 
 def simulate_thread(semaphore, thread_id, priority):
     # Try to acquire the semaphore
     semaphore.acquire(thread_id, priority)
     # Simulate work completion (trigger release immediately)
     semaphore.release(thread_id)
+
 
 def main():
     semaphore = PreemptiveSemaphore(3)  # Allow 3 concurrent accesses
@@ -45,6 +52,6 @@ def main():
     for thread_id, priority in threads:
         simulate_thread(semaphore, thread_id, priority)
 
+
 if __name__ == "__main__":
     main()
-

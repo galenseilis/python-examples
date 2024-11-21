@@ -30,13 +30,18 @@ df["Date"] = pd.to_datetime(df["Date"])
 df = df.sort_values(by="Date")
 
 # Separate major, minor, and patch versions
-df["Major"] = df["Version"].apply(lambda x: x.split('.')[0])
-df["Minor"] = df["Version"].apply(lambda x: x.split('.')[1] if len(x.split('.')) > 1 else '0')
-df["Patch"] = df["Version"].apply(lambda x: x.split('.')[2] if len(x.split('.')) > 2 else '0')
+df["Major"] = df["Version"].apply(lambda x: x.split(".")[0])
+df["Minor"] = df["Version"].apply(
+    lambda x: x.split(".")[1] if len(x.split(".")) > 1 else "0"
+)
+df["Patch"] = df["Version"].apply(
+    lambda x: x.split(".")[2] if len(x.split(".")) > 2 else "0"
+)
 
-major_versions = df[df["Minor"] == '0'][df["Patch"] == '0']
-minor_versions = df[df["Minor"] != '0'][df["Patch"] == '0']
-patch_versions = df[df["Patch"] != '0']
+major_versions = df[df["Minor"] == "0"][df["Patch"] == "0"]
+minor_versions = df[df["Minor"] != "0"][df["Patch"] == "0"]
+patch_versions = df[df["Patch"] != "0"]
+
 
 def plot_versions(dates, releases, title, filename):
     # Choose some nice levels: alternate minor releases between top and bottom, and
@@ -55,27 +60,39 @@ def plot_versions(dates, releases, title, filename):
     ax.set(title=title)
 
     # The vertical stems.
-    ax.vlines(dates, 0, levels,
-              color=[("tab:red", 1 if release.endswith(".0") else .5)
-                     for release in releases])
+    ax.vlines(
+        dates,
+        0,
+        levels,
+        color=[
+            ("tab:red", 1 if release.endswith(".0") else 0.5) for release in releases
+        ],
+    )
     # The baseline.
     ax.axhline(0, c="black")
     # The markers on the baseline.
-    minor_dates = [date for date, release in zip(dates, releases) if release[-1] == '0']
-    bugfix_dates = [date for date, release in zip(dates, releases) if release[-1] != '0']
+    minor_dates = [date for date, release in zip(dates, releases) if release[-1] == "0"]
+    bugfix_dates = [
+        date for date, release in zip(dates, releases) if release[-1] != "0"
+    ]
     ax.plot(bugfix_dates, np.zeros_like(bugfix_dates), "ko", mfc="white")
     ax.plot(minor_dates, np.zeros_like(minor_dates), "ko", mfc="tab:red")
 
     # Annotate the lines.
     for date, level, release in zip(dates, levels, releases):
-        ax.annotate(release, xy=(date, level),
-                    xytext=(-3, np.sign(level)*3), textcoords="offset points",
-                    verticalalignment="bottom" if level > 0 else "top",
-                    weight="bold" if release.endswith(".0") else "normal",
-                    bbox=dict(boxstyle='square', pad=0, lw=0, fc=(1, 1, 1, 0.7)))
+        ax.annotate(
+            release,
+            xy=(date, level),
+            xytext=(-3, np.sign(level) * 3),
+            textcoords="offset points",
+            verticalalignment="bottom" if level > 0 else "top",
+            weight="bold" if release.endswith(".0") else "normal",
+            bbox=dict(boxstyle="square", pad=0, lw=0, fc=(1, 1, 1, 0.7)),
+        )
 
-    ax.yaxis.set(major_locator=mdates.YearLocator(),
-                 major_formatter=mdates.DateFormatter("%Y"))
+    ax.yaxis.set(
+        major_locator=mdates.YearLocator(), major_formatter=mdates.DateFormatter("%Y")
+    )
 
     # Remove the y-axis and some spines.
     ax.yaxis.set_visible(False)
@@ -86,12 +103,27 @@ def plot_versions(dates, releases, title, filename):
     fig.savefig(filename, dpi=300)
     plt.close(fig)
 
+
 # Plotting Major Versions
-plot_versions(major_versions["Date"], major_versions["Version"], "PIP Major Release Dates", "pip_major_releases.png")
+plot_versions(
+    major_versions["Date"],
+    major_versions["Version"],
+    "PIP Major Release Dates",
+    "pip_major_releases.png",
+)
 
 # Plotting Minor Versions
-plot_versions(minor_versions["Date"], minor_versions["Version"], "PIP Minor Release Dates", "pip_minor_releases.png")
+plot_versions(
+    minor_versions["Date"],
+    minor_versions["Version"],
+    "PIP Minor Release Dates",
+    "pip_minor_releases.png",
+)
 
 # Plotting Patch Versions
-plot_versions(patch_versions["Date"], patch_versions["Version"], "PIP Patch Release Dates", "pip_patch_releases.png")
-
+plot_versions(
+    patch_versions["Date"],
+    patch_versions["Version"],
+    "PIP Patch Release Dates",
+    "pip_patch_releases.png",
+)

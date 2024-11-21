@@ -9,8 +9,4 @@ print(columns)
 
 view = dp.DataTable(df, label="Data")
 
-dp.save_report(
-	view,
-	"quickstart_report.html",
-	open=True
-	)
+dp.save_report(view, "quickstart_report.html", open=True)

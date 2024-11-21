@@ -37,37 +37,29 @@ first_nodes = (
 )
 
 recs = (
-        recs
-        .groupby(by=["node", "destination"])
-        .size()
-        .reset_index(name="flow")
-        .replace({-1:4})
-        )
+    recs.groupby(by=["node", "destination"])
+    .size()
+    .reset_index(name="flow")
+    .replace({-1: 4})
+)
 
 
 recs = pd.concat((first_nodes, recs))
 
 
-recs = recs.sort_values(by=['destination', 'node', 'flow'])
+recs = recs.sort_values(by=["destination", "node", "flow"])
 
 fig = go.Figure(
-            go.Sankey(
-                    arrangement='snap',
-                    node=dict(
-                        label=['ArrivalNode', 'ColdFood', 'HotFood', 'Till', 'Exit'],
-                        pad=10
-                        ),
-                    link=dict(
-                        arrowlen=15,
-                        source=recs.node,
-                        target=recs.destination,
-                        value=recs.flow
-                        )
-                )
-        )
+    go.Sankey(
+        arrangement="snap",
+        node=dict(label=["ArrivalNode", "ColdFood", "HotFood", "Till", "Exit"], pad=10),
+        link=dict(
+            arrowlen=15, source=recs.node, target=recs.destination, value=recs.flow
+        ),
+    )
+)
 
-fig.layout.paper_bgcolor = 'rgba(0.5,0.5,0.5,0.5)'
-fig.layout.plot_bgcolor = 'rgba(0.5,0.5,0.5,0.5)'
+fig.layout.paper_bgcolor = "rgba(0.5,0.5,0.5,0.5)"
+fig.layout.plot_bgcolor = "rgba(0.5,0.5,0.5,0.5)"
 
-print(fig.to_html(full_html=False, include_plotlyjs='cdn'))
-
+print(fig.to_html(full_html=False, include_plotlyjs="cdn"))

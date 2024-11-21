@@ -2,6 +2,7 @@ import dis
 import csv
 import sys
 
+
 def disassemble_file(input_file):
     """
     Disassembles a Python file and extracts information about each instruction.
@@ -13,19 +14,22 @@ def disassemble_file(input_file):
         list: A list of dictionaries containing information about each disassembled instruction.
     """
     instructions = []
-    with open(input_file, 'r') as f:
-        code = compile(f.read(), input_file, 'exec')
+    with open(input_file, "r") as f:
+        code = compile(f.read(), input_file, "exec")
         for instr in dis.get_instructions(code):
-            instructions.append({
-                'offset': instr.offset,
-                'opname': instr.opname,
-                'opcode': instr.opcode,
-                'arg': instr.arg,
-                'argval': instr.argval,
-                'argrepr': instr.argrepr,
-                'lineno': instr.starts_line
-            })
+            instructions.append(
+                {
+                    "offset": instr.offset,
+                    "opname": instr.opname,
+                    "opcode": instr.opcode,
+                    "arg": instr.arg,
+                    "argval": instr.argval,
+                    "argrepr": instr.argrepr,
+                    "lineno": instr.starts_line,
+                }
+            )
     return instructions
+
 
 def write_to_csv(instructions, output_file):
     """
@@ -35,12 +39,21 @@ def write_to_csv(instructions, output_file):
         instructions (list): A list of dictionaries containing information about each disassembled instruction.
         output_file (str): The path to the output CSV file.
     """
-    with open(output_file, 'w', newline='') as csvfile:
-        fieldnames = ['offset', 'opname', 'opcode', 'arg', 'argval', 'argrepr', 'lineno']
+    with open(output_file, "w", newline="") as csvfile:
+        fieldnames = [
+            "offset",
+            "opname",
+            "opcode",
+            "arg",
+            "argval",
+            "argrepr",
+            "lineno",
+        ]
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()
         for instr in instructions:
             writer.writerow(instr)
+
 
 def main():
     """
@@ -58,6 +71,6 @@ def main():
     write_to_csv(instructions, output_file)
     print(f"Disassembled instructions written to {output_file}")
 
+
 if __name__ == "__main__":
     main()
-
